@@ -245,8 +245,20 @@ implements Serializable {
                         if(LoginRedirect.OBJECT_TYPE.equals(actionResultSpec.getSpecId().asString())) {
                             val commonContext = targetEntityModel.getCommonContext();
                             val pageClassRegistry = commonContext.lookupServiceElseFail(PageClassRegistry.class);
-                            val signInPage = pageClassRegistry.getPageClass(PageType.SIGN_IN);
-                            RequestCycle.get().setResponsePage(signInPage);
+
+
+                            Boolean externalSignout = Boolean.valueOf(System.getProperty("isis.security.logout.external","false"));
+
+                            if(externalSignout) {
+                                //TODO: Done for integration with an external identity provider which such as Keycloak etc
+                                // in the scenario where we want to support a signout from the App instead of only the External IDP (identity provider)
+                                val signOutPage = pageClassRegistry.getPageClass(PageType.SIGN_OUT);
+                                RequestCycle.get().setResponsePage(signOutPage);
+                            }else{
+                                val signInPage = pageClassRegistry.getPageClass(PageType.SIGN_IN);
+                                RequestCycle.get().setResponsePage(signInPage);
+                            }
+
                         }    
                     });
                     

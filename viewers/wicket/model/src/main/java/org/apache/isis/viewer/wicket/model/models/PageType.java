@@ -41,5 +41,7 @@ public enum PageType {
     ACTION_PROMPT,
     STANDALONE_COLLECTION,
     VALUE,
-    VOID_RETURN;
+    VOID_RETURN,
+    SIGN_OUT;
+
 }

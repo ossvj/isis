@@ -116,6 +116,7 @@ public class IsisConfiguration {
     @Data
     public static class Security {
         private final Shiro shiro = new Shiro();
+
         @Data
         public static class Shiro {
             /**
@@ -129,6 +130,7 @@ public class IsisConfiguration {
             private boolean autoLogoutIfAlreadyAuthenticated = false;
             
         }
+
     }
 
     private final Applib applib = new Applib();

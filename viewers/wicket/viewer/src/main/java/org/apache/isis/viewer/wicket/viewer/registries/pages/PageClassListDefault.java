@@ -21,6 +21,7 @@ package org.apache.isis.viewer.wicket.viewer.registries.pages;
 
 import javax.inject.Named;
 
+import org.apache.isis.viewer.wicket.ui.pages.login.WicketLogoutPage;
 import org.apache.wicket.Page;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
@@ -50,7 +51,8 @@ import org.apache.isis.viewer.wicket.ui.pages.voidreturn.VoidReturnPage;
 @Service
 @Named("isisWicketViewer.PageClassListDefault")
 @Order(OrderPrecedence.MIDPOINT)
-@Primary
+//The below has been commented to allow custom modules to be able to extend and replace the PageClassListDefault instance
+//@Primary
 @Qualifier("Default")
 public class PageClassListDefault implements PageClassList {
 
@@ -70,6 +72,11 @@ public class PageClassListDefault implements PageClassList {
         pageRegistry.registerPage(PageType.STANDALONE_COLLECTION, getStandaloneCollectionPageClass());
         pageRegistry.registerPage(PageType.VALUE, getValuePageClass());
         pageRegistry.registerPage(PageType.VOID_RETURN, getVoidReturnPageClass());
+
+        //Registering an explicit sigout page class to support users of Isis to be able to provide integration with an
+        //external IDP (Identity Provider) such as Keycloak
+        pageRegistry.registerPage(PageType.SIGN_OUT,getSignOutPageClass());
+
     }
 
     /**
@@ -148,4 +155,10 @@ public class PageClassListDefault implements PageClassList {
     protected Class<? extends Page> getAboutPageClass() {
         return AboutPage.class;
     }
+
+    /**
+     * Added to support providing your custom signout page class
+     */
+    protected Class<? extends Page> getSignOutPageClass(){ return WicketLogoutPage.class; }
+
 }
