@@ -19,6 +19,7 @@
 package org.apache.isis.applib.services.user;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -93,6 +94,8 @@ public final class UserMemento implements Serializable {
             final @NonNull Stream<String> roleNames) {
         return new UserMemento(name, roleNames.map(RoleMemento::new));
     }
+
+
     
     // -- CONSTRUCTOR
 
@@ -104,7 +107,21 @@ public final class UserMemento implements Serializable {
             throw new IllegalArgumentException("Name not specified");
         }
         this.name = name;
-        this.roles = roles.collect(_Lists.toUnmodifiable()); 
+        this.roles = roles.collect(_Lists.toUnmodifiable());
+        this.resources = Collections.unmodifiableList(Collections.emptyList());
+    }
+
+    /**
+     * Creates a new user with the specified name and assigned roles.
+     */
+    public UserMemento(final String name, final @NonNull Stream<RoleMemento> roles,
+                       final @NonNull Stream<ResourceMemento> resources) {
+        if (_Strings.isEmpty(name)) {
+            throw new IllegalArgumentException("Name not specified");
+        }
+        this.name = name;
+        this.roles = roles.collect(_Lists.toUnmodifiable());
+        this.resources = resources.collect(_Lists.toUnmodifiable());
     }
 
     public String title() {
@@ -121,11 +138,21 @@ public final class UserMemento implements Serializable {
     /**
      * The roles associated with this user.
      */
-    @MemberOrder(sequence = "1.1")
+    @MemberOrder(sequence = "1.2")
     private final List<RoleMemento> roles;
     public List<RoleMemento> getRoles() {
         return roles;
     }
+
+    /**
+     * The resources accessible by this user
+     */
+    @MemberOrder(sequence = "1.3")
+    private final List<ResourceMemento> resources;
+    public List<ResourceMemento> getResources() {
+        return resources;
+    }
+
 
     /**
      * Determine if the specified name is this user.
@@ -155,7 +182,7 @@ public final class UserMemento implements Serializable {
         for (final RoleMemento role : roles) {
             buf.append(role.getName()).append(" ");
         }
-        return "User [name=" + getName() + ",roles=" + buf.toString() + "]";
+        return "User [name=" + getName() + ",roles=" + buf.toString() + ",resources="+resources+"]";
     }
     
     @Override

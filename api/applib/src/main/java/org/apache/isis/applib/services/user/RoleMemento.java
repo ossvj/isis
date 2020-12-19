@@ -19,6 +19,7 @@
 package org.apache.isis.applib.services.user;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.apache.isis.applib.annotation.MemberOrder;
 
@@ -66,5 +67,7 @@ public final class RoleMemento implements Serializable {
     @MemberOrder(sequence = "1.2")
     @Getter
     private final String description;
+
+
 
 }
