@@ -505,7 +505,9 @@ IsisAppCommonContext.Provider {
         // parameters encoder doesn't seem to be able to handle multiple args
         mountPage("/action/${objectOid}/${actionOwningSpec}/${actionId}/${actionType}", PageType.ACTION_PROMPT);
 
-        mountPage("/logout", WicketLogoutPage.class);
+        //mountPage("/logout", WicketLogoutPage.class);
+        mountPage("/logout",PageType.SIGN_OUT);
+        //mountPage("/keycloak/k_logout",PageType.BACK_CHANNEL_LOGOUT);
     }
 
     protected void mountPage(final String mountPath, final PageType pageType) {
